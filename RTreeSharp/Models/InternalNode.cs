@@ -7,8 +7,11 @@ namespace RTreeSharp.Models
     class InternalNode : Node
     {
         private List<Node> children = new List<Node>();
-        private InternalNode parent;
-        public InternalNode(InternalNode parent) : base(parent) { }
+        public InternalNode(InternalNode parent, BoundingBox boundingBox) : base(parent, boundingBox) 
+        {
+            // add an initial leaf child on create
+            children.Add(new LeafNode(this, boundingBox));
+        }
 
         public override bool Insert(BoundingBox objBounds, string obj)
         {

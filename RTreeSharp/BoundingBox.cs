@@ -22,15 +22,15 @@ namespace RTreeSharp
         }
 
         public bool Intersects(BoundingBox bb) =>
-            !(bb.Left > Right)
-            || (bb.Right < Left)
-            || (bb.Top > Bottom)
-            || (bb.Bottom < Top);
+            !(bb.Left >= Right)
+            || (bb.Right <= Left)
+            || (bb.Top >= Bottom)
+            || (bb.Bottom <= Top);
 
         public bool Contains(BoundingBox bb) =>
-            bb.Left > Left
-            && bb.Right < Right
-            && bb.Top > Top
-            && bb.Bottom < Bottom;
+            bb.Left >= Left
+            && bb.Right <= Right
+            && bb.Top >= Top
+            && bb.Bottom <= Bottom;
     }
 }
