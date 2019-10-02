@@ -8,7 +8,7 @@ namespace RTreeSharp
         private InternalNode rootNode;
         public void Insert(BoundingBox objBounds, String obj)
         {
-
+            rootNode.Insert(objBounds, obj);
         }
     }
 }
