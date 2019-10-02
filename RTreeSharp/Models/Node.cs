@@ -6,6 +6,13 @@ namespace RTreeSharp.Models
 {
     abstract class Node
     {
-        protected BoundingBox boundingBox;
+        public BoundingBox boundingBox;
+        protected Node parent;
+        public Node(Node parent)
+        {
+            this.parent = parent;
+        }
+        public abstract bool Insert(BoundingBox objBounds, String obj);
+        public abstract void SplitChild(Node child);
     }
 }

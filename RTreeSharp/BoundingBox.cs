@@ -26,5 +26,11 @@ namespace RTreeSharp
             || (bb.Right < Left)
             || (bb.Top > Bottom)
             || (bb.Bottom < Top);
+
+        public bool Contains(BoundingBox bb) =>
+            bb.Left > Left
+            && bb.Right < Right
+            && bb.Top > Top
+            && bb.Bottom < Bottom;
     }
 }
