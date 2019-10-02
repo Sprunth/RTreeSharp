@@ -8,9 +8,10 @@ namespace RTreeSharp.Models
     {
         public BoundingBox boundingBox;
         protected Node parent;
-        public Node(Node parent)
+        public Node(Node parent, BoundingBox boundingBox)
         {
             this.parent = parent;
+            this.boundingBox = boundingBox;
         }
         public abstract bool Insert(BoundingBox objBounds, String obj);
         public abstract void SplitChild(Node child);

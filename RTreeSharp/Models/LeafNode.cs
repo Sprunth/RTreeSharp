@@ -10,8 +10,7 @@ namespace RTreeSharp.Models
 
         //todo: change String to generic
         public List<KeyValuePair<BoundingBox, String>> Values { get; private set; } = new List<KeyValuePair<BoundingBox, string>>();
-        private InternalNode parent;
-        public LeafNode(InternalNode parent) : base(parent) { }
+        public LeafNode(InternalNode parent, BoundingBox boundingBox) : base(parent, boundingBox) { }
 
         public override bool Insert(BoundingBox objBounds, string obj)
         {
