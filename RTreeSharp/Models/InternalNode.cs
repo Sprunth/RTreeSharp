@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace RTreeSharp.Models
 {
@@ -15,13 +16,10 @@ namespace RTreeSharp.Models
         {
             if (IsLeafNode)
             {
-                if (values.Count < NODE_CAPACITY)
-                {
-                    values.Add(obj);
-                    return true;
-                }
-                // need to split
-                return false;
+                // Note that we add the new element regardless of whether we need to split
+                values.Add(new Tuple<BoundingBox, string>(objBounds, obj));
+                var needToSplit = values.Count >= NODE_CAPACITY;
+                return needToSplit;
             }
 
             foreach (var child in children)
@@ -47,6 +45,11 @@ namespace RTreeSharp.Models
         public override void SplitChild(Node child)
         {
             throw new NotImplementedException();
+        }
+
+        private Node SelectChildForEnglargement(BoundingBox boundsToContain)
+        {
+            return children.OrderBy((node) => BoundingBox.EnlargedBoundingBox(node.boundingBox, boundsToContain).Area).First();
         }
     }
 }
