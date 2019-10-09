@@ -8,6 +8,9 @@ namespace RTreeSharp.Models
     {
         public BoundingBox boundingBox;
         protected Node parent;
+        protected List<Node> children = new List<Node>();
+        protected List<string> values = new List<string>();
+        protected bool IsLeafNode => children.Count == 0;
         public Node(Node parent, BoundingBox boundingBox)
         {
             this.parent = parent;
