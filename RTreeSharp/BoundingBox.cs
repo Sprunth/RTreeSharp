@@ -40,6 +40,7 @@ namespace RTreeSharp
             && bb.Bottom <= Bottom;
 
         public int Area => Width * Height;
+        public Tuple<float, float> Center => new Tuple<float, float>(Left + (Width / 2f), Top + (Height / 2f));
 
         public static BoundingBox EnlargedBoundingBox(BoundingBox currentBounds, BoundingBox newEntry)
         {

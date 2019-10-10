@@ -8,6 +8,13 @@ namespace RTreeSharp.Models
     class InternalNode : Node
     {
         public static int NODE_CAPACITY = 3;
+        public static void SplitNode(Node node)
+        {
+            var splitPair = (node as InternalNode).FindFarthestValuePair();
+
+            throw new NotImplementedException();
+        }
+
         public InternalNode(InternalNode parent, BoundingBox boundingBox) : base(parent, boundingBox) 
         {
         }
@@ -17,9 +24,9 @@ namespace RTreeSharp.Models
             if (IsLeafNode)
             {
                 // Note that we add the new element regardless of whether we need to split
-                values.Add(new Tuple<BoundingBox, string>(objBounds, obj));
+                values.Add(new NodeValue(objBounds, obj));
                 var needToSplit = values.Count >= NODE_CAPACITY;
-                return needToSplit;
+                return !needToSplit;
             }
 
             foreach (var child in children)
@@ -29,7 +36,7 @@ namespace RTreeSharp.Models
                     var inserted = child.Insert(objBounds, obj);
                     if (!inserted)
                     {
-                        SplitChild(child);
+                        SplitNode(child);
 
                     }
                     return true;
@@ -42,14 +49,22 @@ namespace RTreeSharp.Models
             throw new NotImplementedException();
         }
 
-        public override void SplitChild(Node child)
-        {
-            throw new NotImplementedException();
-        }
-
         private Node SelectChildForEnglargement(BoundingBox boundsToContain)
         {
             return children.OrderBy((node) => BoundingBox.EnlargedBoundingBox(node.boundingBox, boundsToContain).Area).First();
+        }
+
+        private Tuple<Node, Node> FindFarthestChildrenPair()
+        {
+            var permutations = children.SelectMany(c => children.Select(c2 => new { c, c2 })).ToList();
+
+            throw new NotImplementedException();
+        }
+
+        private Tuple<NodeValue, NodeValue> FindFarthestValuePair()
+        {
+            var permutations = values.SelectMany(c => children.Select(c2 => new { c, c2 })).ToList();
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace RTreeSharp.Models
         public BoundingBox boundingBox;
         protected Node parent;
         protected List<Node> children = new List<Node>();
-        protected List<Tuple<BoundingBox, string>> values = new List<Tuple<BoundingBox, string>>();
+        protected List<NodeValue> values = new List<NodeValue>();
         protected bool IsLeafNode => children.Count == 0;
         public Node(Node parent, BoundingBox boundingBox)
         {
@@ -17,6 +17,5 @@ namespace RTreeSharp.Models
             this.boundingBox = boundingBox;
         }
         public abstract bool Insert(BoundingBox objBounds, String obj);
-        public abstract void SplitChild(Node child);
     }
 }
