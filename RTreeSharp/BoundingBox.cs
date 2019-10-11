@@ -44,6 +44,11 @@ namespace RTreeSharp
 
         public static BoundingBox EnlargedBoundingBox(BoundingBox currentBounds, BoundingBox newEntry)
         {
+            if (currentBounds == null)
+                throw new ArgumentNullException(nameof(currentBounds));
+            if (newEntry == null)
+                throw new ArgumentNullException(nameof(newEntry));
+
             var left = Math.Min(currentBounds.Left, newEntry.Left);
             var right = Math.Max(currentBounds.Right, newEntry.Right);
             var top = Math.Min(currentBounds.Top, newEntry.Top);

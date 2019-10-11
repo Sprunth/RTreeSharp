@@ -4,14 +4,14 @@ using System.Text;
 
 namespace RTreeSharp.Models
 {
-    public class NodeValue
+    public class NodeValue : IBounded
     {
-        public BoundingBox Bounds { get; set; }
         public String Value { get; set; }
+        public BoundingBox BoundingBox { get; set; }
 
         public NodeValue(BoundingBox bounds, String value)
         {
-            Bounds = bounds;
+            BoundingBox = bounds;
             Value = value;
         }
     }

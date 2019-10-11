@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using RTreeSharp.Helpers;
 
 namespace RTreeSharp.Models
 {
@@ -10,7 +11,8 @@ namespace RTreeSharp.Models
         public static int NODE_CAPACITY = 3;
         public static void SplitNode(Node node)
         {
-            var splitPair = (node as InternalNode).FindFarthestValuePair();
+            var internalNode = node as InternalNode;
+            var splitPair = BoundingBoxDistanceHelper.FindFarthestBoundedPair(internalNode.children);
 
             throw new NotImplementedException();
         }
@@ -31,7 +33,7 @@ namespace RTreeSharp.Models
 
             foreach (var child in children)
             {
-                if (child.boundingBox.Contains(objBounds))
+                if (child.BoundingBox.Contains(objBounds))
                 {
                     var inserted = child.Insert(objBounds, obj);
                     if (!inserted)
@@ -51,20 +53,7 @@ namespace RTreeSharp.Models
 
         private Node SelectChildForEnglargement(BoundingBox boundsToContain)
         {
-            return children.OrderBy((node) => BoundingBox.EnlargedBoundingBox(node.boundingBox, boundsToContain).Area).First();
-        }
-
-        private Tuple<Node, Node> FindFarthestChildrenPair()
-        {
-            var permutations = children.SelectMany(c => children.Select(c2 => new { c, c2 })).ToList();
-
-            throw new NotImplementedException();
-        }
-
-        private Tuple<NodeValue, NodeValue> FindFarthestValuePair()
-        {
-            var permutations = values.SelectMany(c => children.Select(c2 => new { c, c2 })).ToList();
-            throw new NotImplementedException();
+            return children.OrderBy((node) => BoundingBox.EnlargedBoundingBox(node.BoundingBox, boundsToContain).Area).First();
         }
     }
 }
