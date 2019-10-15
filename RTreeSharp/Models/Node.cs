@@ -4,19 +4,25 @@ using System.Text;
 
 namespace RTreeSharp.Models
 {
-    abstract class Node
+    abstract class Node : IBounded
     {
-        public BoundingBox boundingBox;
+        public BoundingBox BoundingBox { get; set; }
         protected Node parent;
         protected List<Node> children = new List<Node>();
-        protected List<Tuple<BoundingBox, string>> values = new List<Tuple<BoundingBox, string>>();
+        protected List<NodeValue> values = new List<NodeValue>();
         protected bool IsLeafNode => children.Count == 0;
+
         public Node(Node parent, BoundingBox boundingBox)
         {
             this.parent = parent;
-            this.boundingBox = boundingBox;
+            this.BoundingBox = boundingBox;
         }
         public abstract bool Insert(BoundingBox objBounds, String obj);
-        public abstract void SplitChild(Node child);
+
+        public float EnlargementRequired(Node node, BoundingBox bounds)
+        {
+            var newBounds = BoundingBox.EnlargedBoundingBox(bounds, node.BoundingBox);
+            return Math.Max(newBounds.Area - bounds.Area, 0);
+        }
     }
 }
