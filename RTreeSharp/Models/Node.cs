@@ -18,5 +18,11 @@ namespace RTreeSharp.Models
             this.BoundingBox = boundingBox;
         }
         public abstract bool Insert(BoundingBox objBounds, String obj);
+
+        public float EnlargementRequired(Node node, BoundingBox bounds)
+        {
+            var newBounds = BoundingBox.EnlargedBoundingBox(bounds, node.BoundingBox);
+            return Math.Max(newBounds.Area - bounds.Area, 0);
+        }
     }
 }

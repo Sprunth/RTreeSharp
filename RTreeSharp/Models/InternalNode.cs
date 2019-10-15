@@ -14,10 +14,32 @@ namespace RTreeSharp.Models
             var internalNode = node as InternalNode;
             var splitPair = BoundingBoxDistanceHelper.FindFarthestBoundedPair(internalNode.children);
 
+            var l1 = new InternalNode(node.parent, node.BoundingBox);
+            l1.children.Add(splitPair.Item1 as Node);
+            var l2 = new InternalNode(node.parent, node.BoundingBox);
+            l2.children.Add(splitPair.Item2 as Node);
+
+            var remaining = internalNode.children.Where((it) => !it.Equals(splitPair.Item1) && !it.Equals(splitPair.Item2));
+            foreach(var n in remaining)
+            {
+                // get child with minimum enlargement
+                var l1Enlargement = n.EnlargementRequired(l1.BoundingBox);
+                var l2Enlargement = n.EnlargementRequired(l2.BoundingBox);
+
+                // if tie, assign to list with smaller bounding area
+
+                // if tie, assign to smaller list
+            }            
+
             throw new NotImplementedException();
         }
 
-        public InternalNode(InternalNode parent, BoundingBox boundingBox) : base(parent, boundingBox) 
+        private static IEnumerable<IBounded> SortByRequiredEnlargement(IEnumerable<IBounded> bounds, BoundingBox boundsToContain)
+        {
+            return bounds.OrderBy((node) => BoundingBox.EnlargedBoundingBox(node.BoundingBox, boundsToContain).Area);
+        }
+
+        public InternalNode(Node parent, BoundingBox boundingBox) : base(parent, boundingBox) 
         {
         }
 
@@ -49,11 +71,6 @@ namespace RTreeSharp.Models
 
             // todo: enlargement algorithm...
             throw new NotImplementedException();
-        }
-
-        private Node SelectChildForEnglargement(BoundingBox boundsToContain)
-        {
-            return children.OrderBy((node) => BoundingBox.EnlargedBoundingBox(node.BoundingBox, boundsToContain).Area).First();
         }
     }
 }
